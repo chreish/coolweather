@@ -1,5 +1,6 @@
 package yxh.com.coolweather;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Build;
@@ -27,6 +28,7 @@ import okhttp3.Callback;
 import okhttp3.Response;
 import yxh.com.coolweather.gson.Forecast;
 import yxh.com.coolweather.gson.Weather;
+import yxh.com.coolweather.service.AutoUpdateService;
 import yxh.com.coolweather.util.HttpUtil;
 import yxh.com.coolweather.util.Utility;
 
@@ -224,5 +226,11 @@ public class WeatherActivity extends AppCompatActivity {
         carwashText.setText(carWash);
         sportText.setText(sport);
         weatherLayout.setVisibility(View.VISIBLE);
+        if (weather != null && "ok".equals(weather.status)){
+            Intent intent = new Intent(this, AutoUpdateService.class);
+            startService(intent);
+        }else {
+            Toast.makeText(WeatherActivity.this,"获取天气信息失败",Toast.LENGTH_SHORT).show();
+        }
     }
 }
